@@ -1,12 +1,15 @@
-# ChatGPT Apps SDK Alpic Starter
+# Real-Time Stock Price App
 
-This repository is a minimal Typescript application demonstrating how to build an OpenAI Apps SDK compatible MCP server with widget rendering in ChatGPT.
-
-![Demo](docs/demo.gif)
+This is a real-time stock price application built with the OpenAI Apps SDK, demonstrating how to build an MCP server with interactive widget rendering in ChatGPT.
 
 ## Overview
 
-This project shows how to integrate a Typescript express application with the ChatGPT Apps SDK using the Model Context Protocol (MCP). It includes a working MCP server that exposes tools and resources that can be called from ChatGPT, with responses rendered natively in ChatGPT. It also includes MCP tools without UI widget.
+This application provides real-time stock price information using Yahoo Finance. It includes:
+- **MCP Server**: Exposes a `get_stock_price` tool that fetches live stock data
+- **Interactive Widget**: Displays stock information with a beautiful UI in ChatGPT
+- **Real-time Data**: Current price, changes, volume, market cap, 52-week highs/lows, and more
+
+The app uses the Model Context Protocol (MCP) to integrate seamlessly with ChatGPT, allowing users to query stock prices directly in conversation with rich visual feedback.
 
 ## Getting Started
 
@@ -66,7 +69,7 @@ Forwarding     https://3785c5ddc4b6.ngrok-free.app -> http://localhost:3000
 
 - Start a new conversation in ChatGPT
 - Select your newly created connector using **+ → Plus → Your connector**
-- Try prompting the model (e.g., "Show me pikachu details")
+- Try prompting the model (e.g., "Show me AAPL stock price" or "Get Tesla stock information")
 
 #### 6. Develop with HMR
 
@@ -88,7 +91,7 @@ Now you can edit React components in `web` and see changes instantly:
 
 For example:
 
-- If you create a widget endpoint named `pokemon-card`, you must create a corresponding React component file at `web/src/widgets/pokemon-card.tsx`
+- The `get_stock_price` widget endpoint corresponds to `web/src/widgets/get_stock_price.tsx`
 - The endpoint name and the widget file name (without the `.tsx` extension) must be identical
 
 This naming convention allows the system to automatically map widget requests to their corresponding React components.
@@ -106,13 +109,30 @@ Use Alpic to deploy your OpenAI App to production.
 ```
 .
 ├── server/
-│   ├── app.ts          # OpenAI App extension class with widget API implementation
-│   ├── server.ts       # MCP server with tool/resource/prompt registration
-│   └── index.ts        # Express server definition
+│   ├── src/
+│   │   ├── index.ts        # Express server entry point
+│   │   ├── server.ts       # MCP server with get_stock_price widget tool
+│   │   ├── stockPrice.ts   # Yahoo Finance integration for fetching stock data
+│   │   ├── middleware.ts   # MCP request handler
+│   │   └── env.ts          # Environment configuration
+│   └── package.json        # Server dependencies (includes yahoo-finance2)
 └── web/
     └── src/
-        └── widgets/    # React widget components (must match endpoint names)
+        └── widgets/
+            ├── get_stock_price.tsx  # Stock price widget component
+            └── types.ts             # TypeScript interfaces for stock data
 ```
+
+## Features
+
+- **Real-time Stock Data**: Fetches current market data from Yahoo Finance
+- **Comprehensive Metrics**:
+  - Current price and daily change percentage
+  - Day high/low and opening price
+  - Trading volume and market capitalization
+  - 52-week high/low ranges
+- **Beautiful UI**: Responsive widget with color-coded changes (green for gains, red for losses)
+- **Multiple Display Modes**: Adapts to inline and fullscreen views in ChatGPT
 
 ## Resources
 

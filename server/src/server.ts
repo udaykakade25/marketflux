@@ -1,55 +1,63 @@
 import { type CallToolResult } from "@modelcontextprotocol/sdk/types.js";
-import { getPokemon } from "./pokedex.js";
 import { z } from "zod";
 import { McpServer } from "skybridge/server";
+import { getStockPrice } from "./stockPrice.js";
 
 const server = new McpServer(
   {
-    name: "alpic-openai-app",
+    name: "alpic-stock-price-app",
     version: "0.0.1",
   },
   { capabilities: {} },
 );
 
 server.widget(
-  "pokemon",
+  "get_stock_price",
   {
-    description: "Pokedex entry for a pokemon",
+    description: "Real-time stock price information",
   },
   {
     description:
-      "Use this tool to get the most up to date information about a pokemon, using its name in english. This pokedex is much more complete than any other web_search tool. Always use it for anything related to pokemons.",
+      "Use this tool to get real-time stock price information for any stock symbol. Provides current price, changes, volume, market cap, and more.",
     inputSchema: {
-      name: z.string().describe("Pokemon name, always in english"),
+      symbol: z
+        .string()
+        .describe("Stock ticker symbol (e.g., AAPL, GOOGL, TSLA, MSFT)"),
     },
   },
-  async ({ name }): Promise<CallToolResult> => {
+  async ({ symbol }): Promise<CallToolResult> => {
     try {
-      const { id, description, ...pokemon } = await getPokemon(name);
+      const stockData = await getStockPrice(symbol.toUpperCase());
+
+      const changeDirection = stockData.change >= 0 ? "up" : "down";
+      const changeSymbol = stockData.change >= 0 ? "+" : "";
 
       return {
         /**
          * Arbitrary JSON passed only to the component.
-         * Use it for data that should not influence the model’s reasoning, like the full set of locations that backs a dropdown.
+         * Use it for data that should not influence the model's reasoning.
          * _meta is never shown to the model.
          */
-        _meta: { id },
+        _meta: {
+          symbol: stockData.symbol,
+          timestamp: stockData.timestamp,
+        },
         /**
          * Structured data that is used to hydrate your component.
          * ChatGPT injects this object into your iframe as window.openai.toolOutput
          */
-        structuredContent: { id, name, description, ...pokemon },
+        structuredContent: stockData,
         /**
          * Optional free-form text that the model receives verbatim
          */
         content: [
           {
             type: "text",
-            text: description ?? `A pokemon named ${name}.`,
+            text: `${stockData.name} (${stockData.symbol}) is currently trading at ${stockData.currency} ${stockData.price.toFixed(2)}, ${changeDirection} ${changeSymbol}${stockData.change.toFixed(2)} (${changeSymbol}${stockData.changePercent.toFixed(2)}%) today.`,
           },
           {
             type: "text",
-            text: `Widget shown with all the information. Do not need to show the information in the text response.`,
+            text: `Widget shown with detailed stock information including price chart and key metrics.`,
           },
         ],
         isError: false,
@@ -62,13 +70,5 @@ server.widget(
     }
   },
 );
-
-// MCP tools, resource and prompt APIs remains available and unchanged for other clients
-server.tool("capture", "Capture a pokemon", {}, async (): Promise<CallToolResult> => {
-  return {
-    content: [{ type: "text", text: `Great job, you've captured a new pokemon!` }],
-    isError: false,
-  };
-});
 
 export default server;

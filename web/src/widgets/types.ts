@@ -1,30 +1,19 @@
-export type Pokemon = {
-  id: number;
+export interface StockData {
+  symbol: string;
   name: string;
-  color: string;
-  description: string;
-  order: number;
-  imageUrl: string;
-  weightInKilograms: number;
-  heightInMeters: number;
-  types: {
-    id: string;
-    name: string;
-  }[];
-  abilities: {
-    id: string;
-    name: string;
-    description: string;
-  }[];
-  evolutions: {
-    id: number;
-    name: string;
-    order: number;
-    imageUrl: string;
-    isCurrent: boolean;
-  }[];
-  stats: {
-    name: string;
-    value: number;
-  }[];
-};
+  price: number;
+  change: number;
+  changePercent: number;
+  dayHigh: number;
+  dayLow: number;
+  open: number;
+  previousClose: number;
+  volume: number;
+  marketCap?: number;
+  fiftyTwoWeekHigh?: number;
+  fiftyTwoWeekLow?: number;
+  currency: string;
+  exchangeName?: string;
+  timestamp: number;
+  [key: string]: unknown;
+}
