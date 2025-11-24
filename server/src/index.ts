@@ -1,10 +1,15 @@
 import express, { type Express } from "express";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 
 import { widgetsDevServer } from "skybridge/server";
 import type { ViteDevServer } from "vite";
 import { env } from "./env.js";
 import { mcp } from "./middleware.js";
 import server from "./server.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express() as Express & { vite: ViteDevServer };
 
@@ -14,6 +19,9 @@ app.use(mcp(server));
 
 if (env.NODE_ENV !== "production") {
   app.use(await widgetsDevServer());
+} else {
+  // Serve static assets in production
+  app.use("/assets", express.static(join(__dirname, "assets")));
 }
 
 app.listen(3000, (error) => {
