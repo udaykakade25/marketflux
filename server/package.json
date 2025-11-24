@@ -1,9 +1,9 @@
 {
-  "name": "@apps-sdk-template/server",
+  "name": "@marketflux/server",
   "version": "0.0.1",
   "private": true,
   "main": "dist/index.js",
-  "description": "Alpic MCP Server Template",
+  "description": "MarketFlux Server - Real-time Market Data",
   "files": [
     "dist"
   ],

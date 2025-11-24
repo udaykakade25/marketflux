@@ -1,10 +1,11 @@
-# Real-Time Stock Price App
+# MarketFlux
 
-This is a real-time stock price application built with the OpenAI Apps SDK, demonstrating how to build an MCP server with interactive widget rendering in ChatGPT.
+This is a real-time stock price application, demonstrating interactive widget rendering in ChatGPT.
 
 ## Overview
 
 This application provides real-time stock price information using Yahoo Finance. It includes:
+
 - **MCP Server**: Exposes a `get_stock_price` tool that fetches live stock data
 - **Interactive Widget**: Displays stock information with a beautiful UI in ChatGPT
 - **Real-time Data**: Current price, changes, volume, market cap, 52-week highs/lows, and more
@@ -27,7 +28,7 @@ This project uses Vite for React widget development with full HMR support, allow
 
 ```bash
 git clone <repository-url>
-cd apps-sdk-template
+cd marketflux
 pnpm install
 ```
 
@@ -70,20 +71,6 @@ Forwarding     https://3785c5ddc4b6.ngrok-free.app -> http://localhost:3000
 - Start a new conversation in ChatGPT
 - Select your newly created connector using **+ → Plus → Your connector**
 - Try prompting the model (e.g., "Show me AAPL stock price" or "Get Tesla stock information")
-
-#### 6. Develop with HMR
-
-> ⚠️ Since the release of [Chrome 142](https://developer.chrome.com/blog/local-network-access#what_is_local_network_access), local network access on Chromium-based browser from website is **by default** blocked by an access permission prompt. As the widgets are being displayed within iframes, the prompt never appear. Hence, you won't see the iframe appear in ChatGPT.
-> In order to make it work, you need to go to `chrome://flags/#local-network-access-check` and disable the Local Network Access Checks.
-
-Now you can edit React components in `web` and see changes instantly:
-
-- Make changes to any component
-- Save the file
-- The widget will automatically update in ChatGPT without refreshing or reconnecting
-- The Express server and MCP server continue running without interruption
-
-**Note:** When you modify widget components, changes will reflect immediately. If you modify MCP server code (in `src/`), you may need to reload your connector in **Settings → Connectors → [Your connector] → Reload**.
 
 ## Widget Naming Convention
 

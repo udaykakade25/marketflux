@@ -1,34 +1,20 @@
 import YahooFinance from "yahoo-finance2";
+import type { StockData } from "./stockPrice.js";
 
 const yahooFinance = new YahooFinance();
 
-export interface StockData {
-  symbol: string;
-  name: string;
-  price: number;
-  change: number;
-  changePercent: number;
-  dayHigh: number;
-  dayLow: number;
-  open: number;
-  previousClose: number;
-  volume: number;
-  marketCap?: number;
-  fiftyTwoWeekHigh?: number;
-  fiftyTwoWeekLow?: number;
-  circulatingSupply?: number;
-  currency: string;
-  exchangeName?: string;
-  timestamp?: number;
-  [key: string]: unknown;
-}
-
-export async function getStockPrice(symbol: string): Promise<StockData> {
+export async function getCryptoPrice(symbol: string): Promise<StockData> {
   try {
-    const quote: any = await yahooFinance.quote(symbol);
+    // Format crypto symbol: if it doesn't end with -USD, append it
+    let cryptoSymbol = symbol.toUpperCase();
+    if (!cryptoSymbol.includes("-")) {
+      cryptoSymbol = `${cryptoSymbol}-USD`;
+    }
+
+    const quote: any = await yahooFinance.quote(cryptoSymbol);
 
     if (!quote) {
-      throw new Error(`Stock symbol "${symbol}" not found`);
+      throw new Error(`Cryptocurrency "${symbol}" not found`);
     }
 
     const price = quote.regularMarketPrice ?? 0;
@@ -37,7 +23,7 @@ export async function getStockPrice(symbol: string): Promise<StockData> {
     const changePercent = previousClose !== 0 ? (change / previousClose) * 100 : 0;
 
     return {
-      symbol: quote.symbol,
+      symbol: cryptoSymbol,
       name: quote.longName || quote.shortName || symbol,
       price,
       change,
@@ -50,10 +36,10 @@ export async function getStockPrice(symbol: string): Promise<StockData> {
       marketCap: quote.marketCap,
       fiftyTwoWeekHigh: quote.fiftyTwoWeekHigh,
       fiftyTwoWeekLow: quote.fiftyTwoWeekLow,
-      currency: quote.currency || "USD",
-      exchangeName: quote.fullExchangeName,
+      circulatingSupply: quote.circulatingSupply,
+      currency: "USD",
     };
   } catch (error) {
-    throw new Error(`Failed to fetch stock price for ${symbol}: ${error}`);
+    throw new Error(`Failed to fetch crypto price for ${symbol}: ${error}`);
   }
 }

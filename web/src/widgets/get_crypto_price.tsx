@@ -7,7 +7,6 @@ import {
   TrendingDown,
   Activity,
   BarChart3,
-  Calendar,
   ArrowUpRight,
   ArrowDownRight,
   Target,
@@ -16,7 +15,7 @@ import {
 } from "lucide-react";
 import { Spinner } from "@/components/ui/shadcn-io/spinner";
 
-export default function StockPriceWidget() {
+export default function CryptoPriceWidget() {
   const stockData = useToolOutput() as StockData | null;
 
   if (!stockData) {
@@ -55,6 +54,14 @@ export default function StockPriceWidget() {
     return num.toLocaleString();
   };
 
+  const formatSupply = (num: number | undefined): string => {
+    if (num === undefined) return "N/A";
+    if (num >= 1e9) return `${(num / 1e9).toFixed(2)}B`;
+    if (num >= 1e6) return `${(num / 1e6).toFixed(2)}M`;
+    if (num >= 1e3) return `${(num / 1e3).toFixed(2)}K`;
+    return num.toLocaleString();
+  };
+
   return (
     <div className="relative w-full rounded-[40px] bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 p-[2px] shadow-2xl">
       <div className="rounded-[40px] bg-white px-8 py-10 lg:px-12">
@@ -76,13 +83,6 @@ export default function StockPriceWidget() {
                       <p className="text-[#5d6e9e] text-lg font-medium mt-1">{stockData.name}</p>
                     </div>
                   </div>
-                  {stockData.exchangeName && (
-                    <div className="flex items-center gap-2 mt-3 bg-gradient-to-r from-blue-50 to-purple-50 px-4 py-2 rounded-full w-fit">
-                      <p className="text-[#5d6e9e] text-xs font-bold uppercase tracking-wider">
-                        {stockData.exchangeName}
-                      </p>
-                    </div>
-                  )}
                 </div>
               </div>
 
@@ -141,15 +141,15 @@ export default function StockPriceWidget() {
                 <div className="text-3xl font-bold text-[#1e1e1e]">{formatNumber(stockData.open)}</div>
               </div>
 
-              {/* Previous Close Card */}
+              {/* Circulating Supply Card */}
               <div className="rounded-3xl bg-gradient-to-br from-white to-gray-50/50 p-6 shadow-lg ring-1 ring-black/5 transition-all hover:shadow-xl">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500 shadow-md">
-                    <Calendar className="w-5 h-5 text-white" />
+                    <PieChart className="w-5 h-5 text-white" />
                   </div>
                 </div>
-                <div className="text-xs font-bold uppercase tracking-wider text-[#5d6e9e] mb-2">Previous Close</div>
-                <div className="text-3xl font-bold text-[#1e1e1e]">{formatNumber(stockData.previousClose)}</div>
+                <div className="text-xs font-bold uppercase tracking-wider text-[#5d6e9e] mb-2">Circulating Supply</div>
+                <div className="text-3xl font-bold text-[#1e1e1e]">{formatSupply(stockData.circulatingSupply)}</div>
               </div>
 
               {/* Day High Card */}
@@ -247,4 +247,4 @@ export default function StockPriceWidget() {
   );
 }
 
-mountWidget(<StockPriceWidget />);
+mountWidget(<CryptoPriceWidget />);
