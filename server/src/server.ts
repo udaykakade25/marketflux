@@ -21,6 +21,7 @@ server.widget(
   "get_stock_price",
   {
     description: "Real-time stock price information",
+    annotations: { readOnly: true },
   },
   {
     description:
@@ -78,6 +79,7 @@ server.widget(
   "get_stock_news",
   {
     description: "Latest stock market news",
+    annotations: { readOnly: true },
   },
   {
     description:
@@ -124,6 +126,7 @@ server.widget(
   "get_market_indices",
   {
     description: "Major market indices performance",
+    annotations: { readOnly: true },
   },
   {
     description:
@@ -169,6 +172,7 @@ server.widget(
   "get_crypto_price",
   {
     description: "Real-time cryptocurrency price",
+    annotations: { readOnly: true },
   },
   {
     description:
@@ -216,6 +220,7 @@ server.widget(
   "get_crypto_news",
   {
     description: "Latest cryptocurrency news",
+    annotations: { readOnly: true },
   },
   {
     description:
@@ -267,6 +272,7 @@ server.widget(
   "compare_stocks",
   {
     description: "Side-by-side stock comparison",
+    annotations: { readOnly: true },
   },
   {
     description:
@@ -321,6 +327,7 @@ server.widget(
   "compare_crypto",
   {
     description: "Side-by-side cryptocurrency comparison",
+    annotations: { readOnly: true },
   },
   {
     description:
