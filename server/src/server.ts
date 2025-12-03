@@ -28,7 +28,7 @@ server.widget(
     inputSchema: {
       symbol: z.string().describe("Stock ticker symbol (e.g., AAPL, GOOGL, TSLA, MSFT)"),
     },
-    readOnlyHint: true,
+    annotations: { readOnlyHint: true },
   },
   async ({ symbol }): Promise<CallToolResult> => {
     try {
@@ -86,7 +86,7 @@ server.widget(
     inputSchema: {
       limit: z.number().min(1).max(10).default(5).describe("Number of news articles to return (1-10, default: 5)"),
     },
-    readOnlyHint: true,
+    annotations: { readOnlyHint: true },
   },
   async ({ limit }): Promise<CallToolResult> => {
     try {
@@ -131,7 +131,7 @@ server.widget(
     description:
       "Use this tool to get current performance data for major market indices including S&P 500, NASDAQ, DOW Jones, and Russell 2000. Shows current values and daily changes.",
     inputSchema: {},
-    readOnlyHint: true,
+    annotations: { readOnlyHint: true },
   },
   async (): Promise<CallToolResult> => {
     try {
@@ -181,7 +181,7 @@ server.widget(
         .string()
         .describe("Cryptocurrency symbol (e.g., BTC, ETH, DOGE, SOL, ADA, XRP, MATIC)"),
     },
-    readOnlyHint: true,
+    annotations: { readOnlyHint: true },
   },
   async ({ symbol }): Promise<CallToolResult> => {
     try {
@@ -232,7 +232,7 @@ server.widget(
         .default(5)
         .describe("Number of news articles to return (1-10, default: 5)"),
     },
-    readOnlyHint: true,
+    annotations: { readOnlyHint: true },
   },
   async ({ limit }): Promise<CallToolResult> => {
     try {
@@ -283,7 +283,7 @@ server.widget(
         .max(5)
         .describe("Array of 2-5 stock ticker symbols to compare (e.g., ['AAPL', 'MSFT', 'GOOGL'])"),
     },
-    readOnlyHint: true,
+    annotations: { readOnlyHint: true },
   },
   async ({ symbols }): Promise<CallToolResult> => {
     try {
@@ -338,7 +338,7 @@ server.widget(
         .max(5)
         .describe("Array of 2-5 cryptocurrency symbols to compare (e.g., ['BTC', 'ETH', 'SOL'])"),
     },
-    readOnlyHint: true,
+    annotations: { readOnlyHint: true },
   },
   async ({ symbols }): Promise<CallToolResult> => {
     try {
